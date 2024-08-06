@@ -1,3 +1,28 @@
+<?php
+
+
+include("../classi/registerCL.php");
+
+if(isset($_POST['registrati'])){
+    $registrati= new Registrazione($_POST['first_name'],$_POST['last_name'],$_POST['email'],$_POST['password']);
+    $registrati->registrati();
+}
+
+
+
+ //$storico = new Storico($_POST['data'], $_POST['esito'], $_POST['note'], $_POST['identificativoPerStorico']);
+                //$storico->aggiungiStorico();
+
+?>
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,7 +69,7 @@
     <div class="uk-section uk-flex uk-flex-center uk-flex-middle" uk-height-viewport="expand: true">
         <div class="uk-card uk-card-default uk-card-body uk-width-1-3@m uk-padding">
             <h3 class="uk-card-title uk-text-center">Registrazione</h3>
-            <form action="register-handler.php" method="post">
+            <form method="post">
                 <div class="uk-margin">
                     <label for="first-name">Nome</label>
                     <input class="uk-input" type="text" name="first_name" id="first-name" required>
@@ -63,7 +88,7 @@
                     <input class="uk-input" type="password" name="password" id="password" required>
                 </div>
                 <div class="uk-margin">
-                    <button class="uk-button uk-button-primary uk-width-1-1" type="submit">Registrati</button>
+                    <button class="uk-button uk-button-primary uk-width-1-1" type="submit" name="registrati">Registrati</button>
                 </div>
             </form>
             <p class="uk-text-center uk-text-small">Hai già un account? <a href="../templateDiAccesso/login.php">Accedi</a></p>

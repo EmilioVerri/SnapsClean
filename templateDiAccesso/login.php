@@ -44,7 +44,7 @@
     <div class="uk-section uk-flex uk-flex-center uk-flex-middle" uk-height-viewport="expand: true">
         <div class="uk-card uk-card-default uk-card-body uk-width-1-3@m uk-padding">
             <h3 class="uk-card-title uk-text-center">Login</h3>
-            <form action="login-handler.php" method="post">
+            <form method="post">
                 <div class="uk-margin">
                     <label for="email">Email</label>
                     <input class="uk-input" type="email" name="email" id="email" required>
