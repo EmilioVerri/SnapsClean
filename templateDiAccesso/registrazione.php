@@ -2,9 +2,14 @@
 
 
 include("../classi/registerCL.php");
+require_once "../funzioni/funzioneControlloLogin.php";
 
 if(isset($_POST['registrati'])){
-    $registrati= new Registrazione($_POST['first_name'],$_POST['last_name'],$_POST['email'],$_POST['password']);
+
+
+
+    $generazione=generateRandomString();
+    $registrati= new Registrazione($_POST['first_name'],$_POST['last_name'],$_POST['email'],$_POST['password'],$generazione);
     $registrati->registrati();
 }
 
@@ -62,6 +67,20 @@ if(isset($_POST['registrati'])){
         <!-- Fine Navigazione -->
     </header>
     <!-- Fine Header -->
+
+        <!-- Alert Box (Initially Hidden) -->
+        <div id="password-alert" class="uk-alert-danger uk-hidden" uk-alert>
+        <a class="uk-alert-close" uk-close></a>
+        <p>La password deve contenere almeno 7 caratteri, un numero e un carattere speciale.</p>
+    </div>
+
+    <script>
+        // Function to show the alert
+        function showAlert() {
+            var alertBox = document.getElementById('password-alert');
+            alertBox.classList.remove('uk-hidden');
+        }
+    </script>
 
     <hr class="uk-divider-icon">
 
@@ -129,6 +148,9 @@ if(isset($_POST['registrati'])){
     </footer>
     <!-- Fine Footer -->
 
+
+
+ 
 </body>
 
 </html>
