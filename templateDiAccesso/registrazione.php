@@ -5,11 +5,12 @@ include("../classi/registerCL.php");
 require_once "../funzioni/funzioneControlloLogin.php";
 
 if(isset($_POST['registrati'])){
-
-
+    $emailVerificata="no";
+    $livello="utente";
+    $data_oggi = date('d/m/Y');
 
     $generazione=generateRandomString();
-    $registrati= new Registrazione($_POST['first_name'],$_POST['last_name'],$_POST['email'],$_POST['password'],$generazione);
+    $registrati= new Registrazione($_POST['first_name'],$_POST['last_name'],$_POST['email'],$_POST['password'],$generazione,$emailVerificata,$livello,$data_oggi);
     $registrati->registrati();
 }
 
@@ -68,12 +69,13 @@ if(isset($_POST['registrati'])){
     </header>
     <!-- Fine Header -->
 
-        <!-- Alert Box (Initially Hidden) -->
+        <!-- Alert Box (Initially Hidden) PASSWORD --> 
         <div id="password-alert" class="uk-alert-danger uk-hidden" uk-alert>
         <a class="uk-alert-close" uk-close></a>
         <p>La password deve contenere almeno 7 caratteri, un numero e un carattere speciale.</p>
     </div>
 
+    <!--SCRIPT ALERT PASSOWRD-->
     <script>
         // Function to show the alert
         function showAlert() {
@@ -81,6 +83,51 @@ if(isset($_POST['registrati'])){
             alertBox.classList.remove('uk-hidden');
         }
     </script>
+    <!--FINE SCRIPT ALERT PASSWORD-->
+
+
+
+           <!-- Alert Box (Initially Hidden) EMAIL --> 
+           <div id="emaild-alert" class="uk-alert-danger uk-hidden" uk-alert>
+        <a class="uk-alert-close" uk-close></a>
+        <p>Email già presente! Riprova</p>
+    </div>
+
+    <!--SCRIPT ALERT EMAIL-->
+    <script>
+        // Function to show the alert
+        function showAlertEmail() {
+            var alertBox = document.getElementById('emaild-alert');
+            alertBox.classList.remove('uk-hidden');
+        }
+    </script>
+    <!--FINE SCRIPT ALERT EMAIL-->
+
+
+
+
+
+    
+           <!-- Alert Box (Initially Hidden) controlla EMAIL --> 
+           <div id="emailControllo-alert" class="uk-alert-primary uk-hidden" uk-alert>
+        <a class="uk-alert-close" uk-close></a>
+        <p>Per completare la registrazione, per favore conferma il tuo indirizzo email cliccando sul link che ti abbiamo inviato.
+
+Se non trovi l'email nella tua casella di posta, ricordati di controllare anche nella cartella spam.
+
+Una volta confermata, potrai accedere al sito.</p>
+    </div>
+
+    <!--SCRIPT ALERT EMAIL-->
+    <script>
+        // Function to show the alert
+        function showAlertEmailemailControllo() {
+            var alertBox = document.getElementById('emailControllo-alert');
+            alertBox.classList.remove('uk-hidden');
+        }
+    </script>
+    <!--FINE SCRIPT ALERT EMAIL-->
+
 
     <hr class="uk-divider-icon">
 

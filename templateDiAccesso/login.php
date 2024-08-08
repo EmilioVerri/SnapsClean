@@ -30,7 +30,7 @@
             <div class="uk-navbar-right">
                 <ul class="uk-navbar-nav">
                     <li class="uk-active"><a href="../templateDiAccesso/login.php">Login</a></li>
-                    <li class="uk-active"><a href="../templateDiAccesso/registrazione.php">Registrati</a></li>
+                    <li><a href="../templateDiAccesso/registrazione.php">Registrati</a></li>
                 </ul>
             </div>
         </nav>
