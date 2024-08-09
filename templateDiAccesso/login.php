@@ -1,3 +1,29 @@
+<?php
+
+include("../classi/registerCL.php");
+require_once "../funzioni/funzioneControlloLogin.php";
+
+if(isset($_POST['submitLogin'])){
+   $checkEmail= controlloEmailVerificata($_POST['email']);
+   if($checkEmail=="ok"){
+    $loggati= new Registrazione("","",$_POST['email'],$_POST['password'],"","","","");
+    $loggati->login();
+   }else{
+    echo "email non presente o non verificata";
+   }
+
+
+}
+
+
+
+
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,7 +80,7 @@
                     <input class="uk-input" type="password" name="password" id="password" required>
                 </div>
                 <div class="uk-margin">
-                    <button class="uk-button uk-button-primary uk-width-1-1" type="submit">Accedi</button>
+                    <button class="uk-button uk-button-primary uk-width-1-1" name="submitLogin" type="submit">Accedi</button>
                 </div>
             </form>
             <p class="uk-text-center uk-text-small">Non hai un account? <a href="../templateDiAccesso/registrazione.php">Registrati</a></p>

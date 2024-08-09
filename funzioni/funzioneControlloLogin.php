@@ -89,4 +89,50 @@ function controlloEmail($email) {
 
     return $info;
 }
+
+
+
+
+function controlloEmailVerificata($email) {
+    $server = "localhost";
+    $username = "root";
+    $password = "";
+    $database = "snapsclean";
+
+    // Connessione al database
+    $connection = mysqli_connect($server, $username, $password, $database);
+    
+    // Controllo della connessione
+    if (!$connection) {
+        die("Connessione al database fallita: " . mysqli_connect_error());
+    }
+
+    // Prepara la query SQL
+    $query = "SELECT * FROM utenti WHERE email = ? AND emailVerificata = 'si'";
+    $stmt = $connection->prepare($query);
+    
+    // Controllo della preparazione della query
+    if (!$stmt) {
+        die("Preparazione della query fallita: " . $connection->error);
+    }
+
+    // Associa il parametro e esegui la query
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Controlla se la query ha restituito righe
+    if ($result->num_rows > 0) {
+        $info = "ok";  // Email verificata
+    } else {
+        $info = "notOK";  // Email non verificata o non presente
+    }
+
+    // Chiudi lo statement e la connessione
+    $stmt->close();
+    $connection->close();
+
+    return $info;
+}
+
 ?>
