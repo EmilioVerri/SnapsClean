@@ -9,7 +9,11 @@ if(isset($_POST['submitLogin'])){
     $loggati= new Registrazione("","",$_POST['email'],$_POST['password'],"","","","");
     $loggati->login();
    }else{
-    echo "email non presente o non verificata";
+    echo "<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        showAlertUtente();
+    });
+</script>";
    }
 
 
@@ -63,6 +67,50 @@ if(isset($_POST['submitLogin'])){
         <!-- Fine Navigazione -->
     </header>
     <!-- Fine Header -->
+
+
+
+
+      <!-- Alert Box (Initially Hidden) Password non corretta --> 
+      <div id="password-alert" class="uk-alert-danger uk-hidden" uk-alert>
+        <a class="uk-alert-close" uk-close></a>
+        <p class="uk-text-danger">La password che hai inserito è errata. Per favore, riprova e assicurati di inserire la password corretta. Se hai dimenticato la password, puoi utilizzare la funzione di recupero password.</p>
+    </div>
+
+    <!--SCRIPT ALERT password non corretta-->
+    <script>
+        // Function to show the alert
+        function showAlert() {
+            var alertBox = document.getElementById('password-alert');
+            alertBox.classList.remove('uk-hidden');
+        }
+    </script>
+    <!--FINE SCRIPT ALERT password non corretta-->
+
+
+
+  <!-- Alert Box (Initially Hidden) Utente non trovato --> 
+  <div id="utente-alert" class="uk-alert-danger uk-hidden" uk-alert>
+        <a class="uk-alert-close" uk-close></a>
+        <p class="uk-text-danger">Non è stato trovato alcun account associato a questa email. Verifica di aver inserito correttamente l'indirizzo email oppure se hai completato la conferma del tuo account. Se non hai ancora un account, registrati per crearne uno.</p>
+
+    </div>
+
+    <!--SCRIPT ALERT utente non trovato-->
+    <script>
+        // Function to show the alert
+        function showAlertUtente() {
+            var alertBox = document.getElementById('utente-alert');
+            alertBox.classList.remove('uk-hidden');
+        }
+    </script>
+    <!--FINE SCRIPT ALERT utente non trovato-->
+
+
+
+
+
+
 
     <hr class="uk-divider-icon">
 
