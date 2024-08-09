@@ -86,9 +86,9 @@ class Registrazione
         $headers = "From: noreply@192.168.188.74\r\n";
 
         if (mail($to, $subject, $message, $headers)) {
-            echo "Controlla la tua email. Una volta confermata, potrai accedere al sito. Mi raccomando, guarda anche nella cartella spam.";
+           // echo "Controlla la tua email. Una volta confermata, potrai accedere al sito. Mi raccomando, guarda anche nella cartella spam.";
         } else {
-            echo "Errore nell'invio dell'email.";
+           // echo "Errore nell'invio dell'email.";
         }
 //fine invio email
 
