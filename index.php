@@ -1,3 +1,16 @@
+<?php
+
+
+if(isset($_GET['resetPassword'])){
+    echo "<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        showAlertPassword();
+    });
+</script>";
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,6 +78,22 @@
 
     </header>
     <!-- Fine Header -->
+
+     <!-- Alert Box (Initially Hidden) Password Non Coincidente --> 
+     <div id="password-alert" class="uk-alert-primary uk-hidden" uk-alert>
+        <a class="uk-alert-close" uk-close></a>
+        <p class="uk-text-primary">La tua password è stata resettata con successo. Puoi ora accedere al tuo account utilizzando la nuova password. Se hai ulteriori problemi o hai bisogno di assistenza, non esitare a contattare il nostro supporto.</p>
+    </div>
+
+    <!--SCRIPT ALERT password non coincidente-->
+    <script>
+        // Function to show the alert
+        function showAlertPassword() {
+            var alertBox = document.getElementById('password-alert');
+            alertBox.classList.remove('uk-hidden');
+        }
+    </script>
+    <!--FINE SCRIPT ALERT password non coincidente-->
 
 
     <hr class="uk-divider-icon">

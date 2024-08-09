@@ -1,32 +1,58 @@
 <?php
 
-include("../classi/registerCL.php");
-require_once "../funzioni/funzioneControlloLogin.php";
+require_once "./funzioneConnessione.php";
 
-if(isset($_POST['submitLogin'])){
-   $checkEmail= controlloEmailVerificata($_POST['email']);
-   if($checkEmail=="ok"){
-    $loggati= new Registrazione("","",$_POST['email'],$_POST['password'],"","","","");
-    $loggati->login();
-   }else{
-    echo "<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        showAlertUtente();
-    });
-</script>";
-   }
+include_once("./funzioniEsterne.php");
 
 
+
+if(isset($_POST['submitResetPassword'])){
+    if($_POST['new-password']===$_POST['confirm-password']){
+        $passwordControlla=$_POST['new-password'];
+        $risultatoPassword = validaPasswordSecond($passwordControlla);
+        if($risultatoPassword=="ok"){
+        $emailControllo=$_GET['token'];
+        updatePasswordByEmail($emailControllo,$passwordControlla);
+          // Effettua il redirect in modo sicuro
+          header("Location: ./index.php"."?resetPassword=ok");
+    
+          // Interrompe l'esecuzione dello script
+          exit();
+
+
+        }else{
+            $queryString = $_SERVER['QUERY_STRING'];
+        $error="si";
+    
+        // Reindirizza alla stessa pagina mantenendo i parametri GET
+        header("Location: " . $_SERVER['PHP_SELF'] . "?" . $queryString . "&error=" . $error);
+        // Termina l'esecuzione dello script per evitare ulteriori output
+        exit();
+        }
+    }else{
+        $queryString = $_SERVER['QUERY_STRING'];
+        $error="si";
+    
+        // Reindirizza alla stessa pagina mantenendo i parametri GET
+        header("Location: " . $_SERVER['PHP_SELF'] . "?" . $queryString . "&error=" . $error);
+        // Termina l'esecuzione dello script per evitare ulteriori output
+        exit();
+    }
 }
 
 
+if(isset($_GET['token'])){
 
 
+    if(isset($_GET['error'])){
+        echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            showAlertPassword();
+        });
+    </script>";
+    }
 
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +60,7 @@ if(isset($_POST['submitLogin'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SnapsClean - Login</title>
+    <title>SnapsClean - Reimposta Password</title>
     <link rel="stylesheet" href="../css/uikit.min.css" />
     <script src="../js/uikit.min.js"></script>
     <script src="../js/uikit-icons.min.js"></script>
@@ -59,7 +85,7 @@ if(isset($_POST['submitLogin'])){
             </div>
             <div class="uk-navbar-right">
                 <ul class="uk-navbar-nav">
-                    <li class="uk-active"><a href="../templateDiAccesso/login.php">Login</a></li>
+                    <li><a href="../templateDiAccesso/login.php">Login</a></li>
                     <li><a href="../templateDiAccesso/registrazione.php">Registrati</a></li>
                 </ul>
             </div>
@@ -68,74 +94,44 @@ if(isset($_POST['submitLogin'])){
     </header>
     <!-- Fine Header -->
 
-
-
-
-      <!-- Alert Box (Initially Hidden) Password non corretta --> 
-      <div id="password-alert" class="uk-alert-danger uk-hidden" uk-alert>
+    <!-- Alert Box (Initially Hidden) Password Non Coincidente --> 
+    <div id="password-alert" class="uk-alert-danger uk-hidden" uk-alert>
         <a class="uk-alert-close" uk-close></a>
-        <p class="uk-text-danger">La password che hai inserito è errata. Per favore, riprova e assicurati di inserire la password corretta. Se hai dimenticato la password, puoi utilizzare la funzione di recupero password.</p>
+        <p class="uk-text-danger">Le password inserite non corrispondono o non soddisfano i requisiti di sicurezza (7 caratteri, 1 munero e 1 carattere speciale).<br> Assicurati che entrambe le password siano identiche e riprova.</p>
     </div>
 
-    <!--SCRIPT ALERT password non corretta-->
+    <!--SCRIPT ALERT password non coincidente-->
     <script>
         // Function to show the alert
-        function showAlert() {
+        function showAlertPassword() {
             var alertBox = document.getElementById('password-alert');
             alertBox.classList.remove('uk-hidden');
         }
     </script>
-    <!--FINE SCRIPT ALERT password non corretta-->
+    <!--FINE SCRIPT ALERT password non coincidente-->
 
-
-
-  <!-- Alert Box (Initially Hidden) Utente non trovato --> 
-  <div id="utente-alert" class="uk-alert-danger uk-hidden" uk-alert>
-        <a class="uk-alert-close" uk-close></a>
-        <p class="uk-text-danger">Non è stato trovato alcun account associato a questa email. Verifica di aver inserito correttamente l'indirizzo email oppure se hai completato la conferma del tuo account. Se non hai ancora un account, registrati per crearne uno.</p>
-
-    </div>
-
-    <!--SCRIPT ALERT utente non trovato-->
-    <script>
-        // Function to show the alert
-        function showAlertUtente() {
-            var alertBox = document.getElementById('utente-alert');
-            alertBox.classList.remove('uk-hidden');
-        }
-    </script>
-    <!--FINE SCRIPT ALERT utente non trovato-->
-
-
-
-
-
-
-
-    <hr class="uk-divider-icon">
-
-    <!-- Form di Login -->
+    <!-- Form di Reimpostazione Password -->
     <div class="uk-section uk-flex uk-flex-center uk-flex-middle" uk-height-viewport="expand: true">
         <div class="uk-card uk-card-default uk-card-body uk-width-1-3@m uk-padding">
-            <h3 class="uk-card-title uk-text-center">Login</h3>
+            <h3 class="uk-card-title uk-text-center">Reimposta Password</h3>
+            <p class="uk-text-center">Inserisci la tua nuova password e confermala per completare il processo di reimpostazione.</p>
             <form method="post">
                 <div class="uk-margin">
-                    <label for="email">Email</label>
-                    <input class="uk-input" type="email" name="email" id="email" required>
+                    <label for="new-password">Nuova Password</label>
+                    <input class="uk-input" type="password" name="new-password" id="new-password" required>
                 </div>
                 <div class="uk-margin">
-                    <label for="password">Password</label>
-                    <input class="uk-input" type="password" name="password" id="password" required>
+                    <label for="confirm-password">Conferma Password</label>
+                    <input class="uk-input" type="password" name="confirm-password" id="confirm-password" required>
                 </div>
                 <div class="uk-margin">
-                    <button class="uk-button uk-button-primary uk-width-1-1" name="submitLogin" type="submit">Accedi</button>
+                    <button class="uk-button uk-button-primary uk-width-1-1" name="submitResetPassword" type="submit">Reimposta Password</button>
                 </div>
             </form>
-            <p class="uk-text-center uk-text-small">Non hai un account? <a href="../templateDiAccesso/registrazione.php">Registrati</a></p>
-            <p class="uk-text-center uk-text-small">Hai dimenticato la password? <a href="../templateDiAccesso/passwordDimenticata.php">Password Dimenticata</a></p>
+            <p class="uk-text-center uk-text-small">Ricordi la tua password? <a href="../templateDiAccesso/login.php">Torna al Login</a></p>
         </div>
     </div>
-    <!-- Fine Form di Login -->
+    <!-- Fine Form di Reimpostazione Password -->
 
     <hr class="uk-divider-icon">
 
@@ -173,3 +169,13 @@ if(isset($_POST['submitLogin'])){
 </body>
 
 </html>
+    <?php
+}
+else{
+        // Effettua il redirect in modo sicuro
+        header("Location: ./index.php");
+    
+        // Interrompe l'esecuzione dello script
+        exit();
+    
+}

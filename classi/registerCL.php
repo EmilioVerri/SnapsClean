@@ -30,6 +30,42 @@ class Registrazione
         $this->data_oggi = $data_oggi;
     }
 
+    public function passwordDimenticata(){
+        
+        $queryConferma = "SELECT verificaEmail FROM utenti WHERE email='{$this->email}'";
+        $tokenDaEstrarre = queryDBSelect($queryConferma);
+
+
+        $token = $tokenDaEstrarre[0]['verificaEmail'];
+        //invioEmail
+        // Invio dell'email con il link di conferma
+        $to = $this->email;
+        $subject = "Resetta la tua password";
+        $confirm_url = "http://192.168.188.74/resetPassword.php?token=" . $token; // Sostituisci con il tuo dominio
+        $message = "
+Ciao,
+
+Clicca sul link che ti è stato inviato via email per reimpostare la tua password. Se non ricevi l'email, verifica la tua cartella spam o prova a richiederla di nuovo.
+
+$confirm_url
+";
+
+        $headers = "From: noreply@192.168.188.74\r\n";
+
+        if (mail($to, $subject, $message, $headers)) {
+            // echo "Controlla la tua email. Una volta confermata, potrai accedere al sito. Mi raccomando, guarda anche nella cartella spam.";
+        } else {
+            // echo "Errore nell'invio dell'email.";
+        }
+        //fine invio email
+
+    }
+
+
+
+
+
+
     public function login()
     {
         verificaUtenteLogin($this->email, $this->password);

@@ -1,24 +1,23 @@
 <?php
 
-include("../classi/registerCL.php");
-require_once "../funzioni/funzioneControlloLogin.php";
-
-if(isset($_POST['submitLogin'])){
-   $checkEmail= controlloEmailVerificata($_POST['email']);
-   if($checkEmail=="ok"){
-    $loggati= new Registrazione("","",$_POST['email'],$_POST['password'],"","","","");
-    $loggati->login();
-   }else{
-    echo "<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        showAlertUtente();
-    });
-</script>";
-   }
+include_once("../classi/registerCL.php");
+include_once("../funzioni/funzioneControlloLogin.php");
 
 
+if(isset($_POST['submitReset'])){
+    $checkEmail= controlloEmailVerificata($_POST['email']);
+    if($checkEmail=="ok"){
+     $passwordDimenticata= new Registrazione("","",$_POST['email'],"","","","","");
+     $passwordDimenticata->passwordDimenticata();
+    }else{
+     echo "<script>
+     document.addEventListener('DOMContentLoaded', function() {
+         showAlertUtente();
+     });
+ </script>";
+    }
+ 
 }
-
 
 
 
@@ -34,7 +33,7 @@ if(isset($_POST['submitLogin'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SnapsClean - Login</title>
+    <title>SnapsClean - Password Dimenticata</title>
     <link rel="stylesheet" href="../css/uikit.min.css" />
     <script src="../js/uikit.min.js"></script>
     <script src="../js/uikit-icons.min.js"></script>
@@ -59,7 +58,7 @@ if(isset($_POST['submitLogin'])){
             </div>
             <div class="uk-navbar-right">
                 <ul class="uk-navbar-nav">
-                    <li class="uk-active"><a href="../templateDiAccesso/login.php">Login</a></li>
+                    <li><a href="../templateDiAccesso/login.php">Login</a></li>
                     <li><a href="../templateDiAccesso/registrazione.php">Registrati</a></li>
                 </ul>
             </div>
@@ -70,26 +69,7 @@ if(isset($_POST['submitLogin'])){
 
 
 
-
-      <!-- Alert Box (Initially Hidden) Password non corretta --> 
-      <div id="password-alert" class="uk-alert-danger uk-hidden" uk-alert>
-        <a class="uk-alert-close" uk-close></a>
-        <p class="uk-text-danger">La password che hai inserito è errata. Per favore, riprova e assicurati di inserire la password corretta. Se hai dimenticato la password, puoi utilizzare la funzione di recupero password.</p>
-    </div>
-
-    <!--SCRIPT ALERT password non corretta-->
-    <script>
-        // Function to show the alert
-        function showAlert() {
-            var alertBox = document.getElementById('password-alert');
-            alertBox.classList.remove('uk-hidden');
-        }
-    </script>
-    <!--FINE SCRIPT ALERT password non corretta-->
-
-
-
-  <!-- Alert Box (Initially Hidden) Utente non trovato --> 
+    <!-- Alert Box (Initially Hidden) Utente non trovato --> 
   <div id="utente-alert" class="uk-alert-danger uk-hidden" uk-alert>
         <a class="uk-alert-close" uk-close></a>
         <p class="uk-text-danger">Non è stato trovato alcun account associato a questa email. Verifica di aver inserito correttamente l'indirizzo email oppure se hai completato la conferma del tuo account. Se non hai ancora un account, registrati per crearne uno.</p>
@@ -106,36 +86,26 @@ if(isset($_POST['submitLogin'])){
     </script>
     <!--FINE SCRIPT ALERT utente non trovato-->
 
-
-
-
-
-
-
     <hr class="uk-divider-icon">
 
-    <!-- Form di Login -->
+    <!-- Form di Password Dimenticata -->
     <div class="uk-section uk-flex uk-flex-center uk-flex-middle" uk-height-viewport="expand: true">
         <div class="uk-card uk-card-default uk-card-body uk-width-1-3@m uk-padding">
-            <h3 class="uk-card-title uk-text-center">Login</h3>
+            <h3 class="uk-card-title uk-text-center">Password Dimenticata</h3>
+            <p class="uk-text-center">Inserisci il tuo indirizzo email per ricevere le istruzioni su come reimpostare la tua password.</p>
             <form method="post">
                 <div class="uk-margin">
                     <label for="email">Email</label>
                     <input class="uk-input" type="email" name="email" id="email" required>
                 </div>
                 <div class="uk-margin">
-                    <label for="password">Password</label>
-                    <input class="uk-input" type="password" name="password" id="password" required>
-                </div>
-                <div class="uk-margin">
-                    <button class="uk-button uk-button-primary uk-width-1-1" name="submitLogin" type="submit">Accedi</button>
+                    <button class="uk-button uk-button-primary uk-width-1-1" name="submitReset" type="submit">Resettala</button>
                 </div>
             </form>
-            <p class="uk-text-center uk-text-small">Non hai un account? <a href="../templateDiAccesso/registrazione.php">Registrati</a></p>
-            <p class="uk-text-center uk-text-small">Hai dimenticato la password? <a href="../templateDiAccesso/passwordDimenticata.php">Password Dimenticata</a></p>
+            <p class="uk-text-center uk-text-small">Ricordi la tua password? <a href="../templateDiAccesso/login.php">Torna al Login</a></p>
         </div>
     </div>
-    <!-- Fine Form di Login -->
+    <!-- Fine Form di Password Dimenticata -->
 
     <hr class="uk-divider-icon">
 
